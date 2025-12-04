@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>MQTT Web Dashboard</title>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            max-width: 420px;
+        }
+
+        button {
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Dashboard MQTT - ESP32</h2>
+    <div class="card">
+        <div>Broker: <input id="broker" value="ws://broker.hivemq.com:8000/mqtt" style="width:80%"></div>
+        <div><button id="connectBtn">Connect</button> <span id="connStatus">Disconnected</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Sensor</h3>
+        <div>Ultrasonic: <span id="ultrasonic">-</span> cm</div>
+    </div>
+
+    <div class="card">
+        <h3>Actuator (LED)</h3>
+        <button id="ledOnBtn">Turn ON</button>
+        <button id="ledOffBtn">Turn OFF</button>
+    </div>
+
+    <script>
+        let client = null;
+        const deviceId = "device-1-kelompok-3";
+        const topics = {
+            ultrasonic: `polindra/${deviceId}/sensor/ultrasonic`,
+            ledSet: `polindra/${deviceId}/actuator/led/set`
+        };
+
+        function connect(brokerUrl) {
+            client = mqtt.connect(brokerUrl);
+            document.getElementById('connStatus').innerText = 'Connecting...';
+            client.on('connect', () => {
+                document.getElementById('connStatus').innerText = 'Connected';
+                client.subscribe(topics.ultrasonic);
+            });
+            client.on('message', (topic, payload) => {
+                try {
+                    const msg = JSON.parse(payload.toString());
+                    if (topic === topics.ultrasonic) {
+                        document.getElementById('ultrasonic').innerText = msg.value;
+                    } else if (topic === topics.lainnya) {
+                        // silakan tambahkan logika untuk topic lainnya
+                    }
+                } catch (e) {
+                    console.log('Invalid JSON', payload.toString());
+                }
+            });
+            client.on('error', (err) => {
+                console.error(err);
+                document.getElementById('connStatus').innerText = 'Error';
+            });
+            client.on('close', () => {
+                document.getElementById('connStatus').innerText = 'Disconnected';
+            });
+        }
+
+        document.getElementById('connectBtn').addEventListener('click', () => {
+            const url = document.getElementById('broker').value;
+            connect(url);
+        });
+
+        document.getElementById('ledOnBtn').addEventListener('click', () => {
+            if (client && client.connected) {
+                client.publish(topics.ledSet, JSON.stringify({ state: "ON" }));
+            }
+        });
+        document.getElementById('ledOffBtn').addEventListener('click', () => {
+            if (client && client.connected) {
+                client.publish(topics.ledSet, JSON.stringify({ state: "OFF" }));
+            }
+        });
+    </script>
+</body>
+
+</html>

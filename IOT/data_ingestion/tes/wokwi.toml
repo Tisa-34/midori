@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'sketch_nov20a_nyobaPython/build/esp32.esp32.esp32/sketch_nov20a_nyobaPython.ino.bin'
+elf = 'sketch_nov20a_nyobaPython/build/esp32.esp32.esp32/sketch_nov20a_nyobaPython.ino.elf'

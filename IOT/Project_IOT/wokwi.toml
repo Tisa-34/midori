@@ -1,0 +1,4 @@
+[simulation]
+board = "uno"
+sketch = "tes.ino"
+wokwi_license = ""
