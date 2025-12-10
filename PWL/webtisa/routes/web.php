@@ -17,7 +17,7 @@ use App\Http\Controllers\resmahasiswaController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view ('welcome');
 });
 /*
 Route::get('/mahasiswa', [mahasiswaController::class, 'index'])->name('mahasiswa');
