@@ -16,7 +16,7 @@ class prodiController extends Controller
 
     }
         */
-
+/*
     public function dataProdi(){
         $dataProdi = array(
             ['kdProdi' => '001',
@@ -41,7 +41,7 @@ class prodiController extends Controller
 
 
     }
-
+*/
     /*
     public function index()
 {
@@ -58,4 +58,19 @@ class prodiController extends Controller
 }
 
     */
+
+    public function index(){
+    $title = "Program Studi WebTisa.com";
+    $slug = "prodi";
+    $prodi = "Teknik Informatika";
+
+    $dataProdi = [
+        ['kdProdi' => '001', 'namaProdi' => 'Teknik Mesin'],
+        ['kdProdi' => '002', 'namaProdi' => 'Perancangan Manufaktur'],
+        ['kdProdi' => '003', 'namaProdi' => 'Teknik Informatika']
+    ];
+
+    return view('konten.prodi', compact('prodi','title', 'slug', 'dataProdi'));
+}
+
 }
