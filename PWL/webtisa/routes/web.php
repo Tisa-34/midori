@@ -47,3 +47,5 @@ Route::resource('resmahasiswa',resmahasiswaController::class);
 
 Route::get('/prodi', [prodiController::class, 'index']);
 
+Route::get('/resmahasiswa',[resmahasiswaController::class,'index']);
+
